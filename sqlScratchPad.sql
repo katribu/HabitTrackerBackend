@@ -64,3 +64,12 @@ habits.id = day_habits.habit_id
 JOIN months ON
 months.id = day_habits.month_id
 WHERE habits.habit = 'yoga';
+
+
+-- Checking to see if a row already exists.
+-- this query doesn't work yet
+INSERT INTO day_habits
+(habit_id,month_id,day_id)
+SELECT 4,5,10
+WHERE NOT EXISTS(SELECT 4, 5, 10
+FROM day_habits WHERE habit_id=1 and month_id=3 and day_id=10)

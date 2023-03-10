@@ -6,10 +6,16 @@ dotenv.config();
 const app: Express = express();
 app.use(express.json())
 
-const {getHabitsByMonth, registerHabit} = require('./database')
+const {getHabitsByMonth, registerHabit, addNewHabit, getAllHabits} = require('./database')
 
 // const port = process.env.PORT;
 const port = 3333;
+
+app.get('/habits', async (req: Request, res: Response)=> {
+  const result = await getAllHabits()
+  res.send(result)
+
+})
 
 app.get('/:month', async (req: Request, res: Response) => {
   const {month} = req.params;
@@ -37,6 +43,16 @@ app.post('/registerhabit', async (req: Request, res: Response) => {
     res.status(401).send({error:error.message})
   }
 
+})
+
+app.post('/add', async (req:Request, res: Response)=> {
+  const {habit} = req.body
+  try {
+    await addNewHabit(habit)
+    res.json({"message": `${habit} was successfully added to list.`})
+  }catch(error:any){
+  res.status(401).send({error: error.message})
+  }
 })
 
 app.listen(port, () => {

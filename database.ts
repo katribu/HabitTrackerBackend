@@ -8,10 +8,27 @@ const database = new Pool({
         port: 5432,
     })
 
+async function addNewHabit(habit:string){
+    const result = await database.query (`
+    INSERT INTO habits (habit)
+    VALUES ($1)
+    `,[habit])
+
+    return result.rows[0]
+}
+
+async function getAllHabits(){
+    const result = await database.query (`
+    SELECT *
+    FROM habits
+    `)
+
+    return result.rows
+}
+
 async function getHabitsByMonth(month:string) {
     const result = await database.query(`
     SELECT habits.habit as habit,
-    months.month as month,
     days.days as day
     FROM 
     habits
@@ -42,10 +59,17 @@ async function registerHabit(habit:number, month: number, day: number ){
     `,[habit, month, day ]);
 
     const registeredHabit = result.rows[0]
-    return registeredHabit;
+    if(habit && month && day){
+        return `This habit has already been registered for this month and day.`
+    }else {
+        return registeredHabit;
+    }
+
 }
 
 module.exports = {
     getHabitsByMonth,
-    registerHabit
+    registerHabit,
+    addNewHabit,
+    getAllHabits
 }
