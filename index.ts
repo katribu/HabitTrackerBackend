@@ -1,10 +1,12 @@
 import express, { Express, Request, response, Response } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors-ts'
 
 dotenv.config();
 
 const app: Express = express();
 app.use(express.json())
+app.use(cors())
 
 const {getHabitsByMonth, registerHabit, addNewHabit, getAllHabits} = require('./database')
 
@@ -51,7 +53,7 @@ app.post('/add', async (req:Request, res: Response)=> {
     await addNewHabit(habit)
     res.json({"message": `${habit} was successfully added to list.`})
   }catch(error:any){
-  res.status(401).send({error: error.message})
+  res.status(401).send({error:"This habit already exists"})
   }
 })
 
