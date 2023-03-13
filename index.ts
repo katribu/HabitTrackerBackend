@@ -42,7 +42,7 @@ app.post('/registerhabit', async (req: Request, res: Response) => {
     await registerHabit(habits, month, day)
     res.json({"message": "Habit registered successfully"})
   }catch (error: any) {
-    res.status(401).send({error:"This habit has already been registered for this day."})
+    res.status(401).send({error:error.message})
   }
 
 })

@@ -42,7 +42,7 @@ values
 --Added the unique restaint at the bottom so every row needs to be different
 --(ie. every day can only have one habit. No duplicates)
 create table day_habits (
-ID integer primary key,
+ID serial primary key,
 habits text,
 month_id integer,
 day_id integer,
