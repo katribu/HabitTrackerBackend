@@ -58,13 +58,8 @@ async function registerHabit(habit:number, month: number, day: number ){
     VALUES ($1, $2, $3)
     `,[habit, month, day ]);
 
-    const registeredHabit = result.rows[0]
-    if(habit && month && day){
-        return `This habit has already been registered for this month and day.`
-    }else {
-        return registeredHabit;
-    }
-
+    return result.rows[0]
+    
 }
 
 module.exports = {

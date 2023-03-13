@@ -39,14 +39,17 @@ values
 (22), (23), (24), (25), (26), (27), (28),
 (29), (30), (31);
 
+--Added the unique restaint at the bottom so every row needs to be different
+--(ie. every day can only have one habit. No duplicates)
 create table day_habits (
-ID serial primary key,
+ID integer primary key,
 habit_id integer,
 month_id integer,
 day_id integer,
 FOREIGN KEY (habit_id) REFERENCES habits (id),
 FOREIGN KEY (month_id) REFERENCES months (id),
-FOREIGN KEY (day_id) REFERENCES days (days)
+FOREIGN KEY (day_id) REFERENCES days (days),
+UNIQUE (habit_id, month_id,day_id)
 );
 
 insert into day_habits (habit_id,month_id,day_id)
@@ -66,10 +69,3 @@ months.id = day_habits.month_id
 WHERE habits.habit = 'yoga';
 
 
--- Checking to see if a row already exists.
--- this query doesn't work yet
-INSERT INTO day_habits
-(habit_id,month_id,day_id)
-SELECT 4,5,10
-WHERE NOT EXISTS(SELECT 4, 5, 10
-FROM day_habits WHERE habit_id=1 and month_id=3 and day_id=10)
