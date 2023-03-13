@@ -36,10 +36,10 @@ app.get('/:month', async (req: Request, res: Response) => {
 
 
 app.post('/registerhabit', async (req: Request, res: Response) => {
-  const {habit, month, day} = req.body
+  const {habits, month, day} = req.body
 
   try{
-    await registerHabit(habit, month, day)
+    await registerHabit(habits, month, day)
     res.json({"message": "Habit registered successfully"})
   }catch (error: any) {
     res.status(401).send({error:"This habit has already been registered for this day."})

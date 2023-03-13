@@ -10,7 +10,7 @@ const database = new Pool({
 
 async function addNewHabit(habit:string){
     const result = await database.query (`
-    INSERT INTO habits (habit)
+    INSERT INTO habits (habits)
     VALUES ($1)
     `,[habit])
 
@@ -19,7 +19,7 @@ async function addNewHabit(habit:string){
 
 async function getAllHabits(){
     const result = await database.query (`
-    SELECT *
+    SELECT habits
     FROM habits
     `)
 
@@ -28,12 +28,12 @@ async function getAllHabits(){
 
 async function getHabitsByMonth(month:string) {
     const result = await database.query(`
-    SELECT habits.habit as habit,
+    SELECT habits.habits as habit,
     days.days as day
     FROM 
     habits
     JOIN day_habits ON
-    habits.id = day_habits.habit_id
+    habits.habits = day_habits.habits
     JOIN months ON
     months.id = day_habits.month_id
     JOIN days ON
@@ -51,12 +51,12 @@ async function getHabitsByMonth(month:string) {
     }
 }
 
-async function registerHabit(habit:number, month: number, day: number ){
+async function registerHabit(habits:string, month: number, day: number ){
     const result = await database.query(`
     INSERT INTO day_habits
-    (habit_id,month_id,day_id)
+    (habits,month_id,day_id)
     VALUES ($1, $2, $3)
-    `,[habit, month, day ]);
+    `,[habits, month, day ]);
 
     return result.rows[0]
     

@@ -43,13 +43,13 @@ values
 --(ie. every day can only have one habit. No duplicates)
 create table day_habits (
 ID integer primary key,
-habit_id integer,
+habits text,
 month_id integer,
 day_id integer,
-FOREIGN KEY (habit_id) REFERENCES habits (id),
+FOREIGN KEY (habits) REFERENCES habits (habits),
 FOREIGN KEY (month_id) REFERENCES months (id),
 FOREIGN KEY (day_id) REFERENCES days (days),
-UNIQUE (habit_id, month_id,day_id)
+UNIQUE (habits, month_id,day_id)
 );
 
 insert into day_habits (habit_id,month_id,day_id)
