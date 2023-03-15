@@ -24,7 +24,7 @@ app.get('/:month', async (req: Request, res: Response) => {
   try{
     const results = await getHabitsByMonth(month)
     if(!results){
-      res.status(401).send({error: "This month has no habits registered"})
+      res.send({error: "This month has no habits registered"})
       return;
     }
     res.json(results);

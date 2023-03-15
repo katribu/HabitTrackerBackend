@@ -28,7 +28,9 @@ async function getAllHabits(){
 
 async function getHabitsByMonth(month:string) {
     const result = await database.query(`
-    SELECT habits.habits as habit,
+    SELECT 
+    day_habits.id as id,
+    habits.habits as habit,
     days.days as day
     FROM 
     habits
@@ -43,12 +45,7 @@ async function getHabitsByMonth(month:string) {
     `,[month])
 
     const resultsArray = result.rows
-    if(resultsArray.length === 0){
-        return "This month has no habits registered"
-    }
-    else {
-        return resultsArray
-    }
+    return resultsArray
 }
 
 async function registerHabit(habits:string, month: number, day: number ){
