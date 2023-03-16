@@ -83,7 +83,14 @@ JOIN months ON
 where months.month = 'January'
 group by months.month,day_habits.habits, day_habits.month_id
 
-
+-- Another version, with fewer columns
+SELECT day_habits.habits, 
+array_agg((day_habits.day_id)) as days
+from day_habits
+JOIN months ON
+    months.id = day_habits.month_id
+where months.month = 'January'
+group by day_habits.habits
 -- get habits by month where they are in json format.
 SELECT months.month,day_habits.habits, day_habits.month_id, 
 json_agg(json_build_object(

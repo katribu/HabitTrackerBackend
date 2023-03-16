@@ -30,16 +30,13 @@ async function getAllHabits(){
 async function getHabitsByMonth(month:string){
     const result = await database.query (`
     SELECT day_habits.habits, 
-    json_agg(json_build_object(
-    'id',day_habits.id,
-    'day',day_habits.day_id
-    )) as days
-    FROM day_habits
+    array_agg((day_habits.day_id)) as days
+    from day_habits
     JOIN months ON
     months.id = day_habits.month_id
-    WHERE months.month = $1
-    GROUP BY day_habits.habits
-    `,[month])
+    where months.month = $1
+    group by day_habits.habits
+`,[month])
 
     const resultsArray = result.rows
     return resultsArray
