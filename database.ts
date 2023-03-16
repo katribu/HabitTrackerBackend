@@ -26,22 +26,19 @@ async function getAllHabits(){
     return result.rows
 }
 
-async function getHabitsByMonth(month:string) {
-    const result = await database.query(`
-    SELECT 
-    day_habits.id as id,
-    habits.habits as habit,
-    days.days as day
-    FROM 
-    habits
-    JOIN day_habits ON
-    habits.habits = day_habits.habits
+
+async function getHabitsByMonth(month:string){
+    const result = await database.query (`
+    SELECT day_habits.habits, 
+    json_agg(json_build_object(
+    'id',day_habits.id,
+    'day',day_habits.day_id
+    )) as days
+    FROM day_habits
     JOIN months ON
     months.id = day_habits.month_id
-    JOIN days ON
-    days.days = day_habits.day_id
     WHERE months.month = $1
-    ORDER BY days.days asc
+    GROUP BY day_habits.habits
     `,[month])
 
     const resultsArray = result.rows
@@ -65,3 +62,31 @@ module.exports = {
     addNewHabit,
     getAllHabits
 }
+
+
+
+
+// const Habits = [
+//     January: {
+//         Yoga: [
+//             {id: 1, day: 1},
+//             {id:2, day: 2}
+//         ],
+//         Spanish : [
+//             {id: 3, day: 5},
+//             {id: 8, day: 10}
+//         ]
+        
+//     },
+//     February: {
+//         Yoga: [
+//             {id: 1, day: 1},
+//             {id:2, day: 2}
+//         ],
+//         Spanish : [
+//             {id: 3, day: 5},
+//             {id: 8, day: 10}
+//         ]
+//     }
+
+// ]

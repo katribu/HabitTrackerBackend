@@ -69,3 +69,29 @@ months.id = day_habits.month_id
 WHERE habits.habit = 'yoga';
 
 
+-- Combining two rows into an array
+SELECT habits,month_id, array_agg((id,day_id)) as days
+from day_habits
+group by habits, month_id
+
+--get habits by months, with days and ids combinted in array
+SELECT months.month,day_habits.habits, day_habits.month_id, 
+array_agg((day_habits.id,day_habits.day_id)) as days
+from day_habits
+JOIN months ON
+    months.id = day_habits.month_id
+where months.month = 'January'
+group by months.month,day_habits.habits, day_habits.month_id
+
+
+-- get habits by month where they are in json format.
+SELECT months.month,day_habits.habits, day_habits.month_id, 
+json_agg(json_build_object(
+'id',day_habits.id,
+'day',day_habits.day_id
+)) as days
+from day_habits
+JOIN months ON
+    months.id = day_habits.month_id
+where months.month = 'January'
+group by months.month,day_habits.habits, day_habits.month_id
