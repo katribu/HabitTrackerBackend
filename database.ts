@@ -1,10 +1,12 @@
-const { Pool } = require('pg')
+const { Pool } = require('pg');
+import dotenv from 'dotenv';
+dotenv.config();
 
 const database = new Pool({
         user: 'postgres',
         host: 'localhost',
         database: 'Habits',
-        password: '100759094',
+        password: process.env.DB_PSWD,
         port: 5432,
     })
 
@@ -62,28 +64,3 @@ module.exports = {
 
 
 
-
-// const Habits = [
-//     January: {
-//         Yoga: [
-//             {id: 1, day: 1},
-//             {id:2, day: 2}
-//         ],
-//         Spanish : [
-//             {id: 3, day: 5},
-//             {id: 8, day: 10}
-//         ]
-        
-//     },
-//     February: {
-//         Yoga: [
-//             {id: 1, day: 1},
-//             {id:2, day: 2}
-//         ],
-//         Spanish : [
-//             {id: 3, day: 5},
-//             {id: 8, day: 10}
-//         ]
-//     }
-
-// ]
