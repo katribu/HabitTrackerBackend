@@ -32,12 +32,13 @@ async function getAllHabits(){
 async function getHabitsByMonth(month:string){
     const result = await database.query (`
     SELECT day_habits.habits, 
-    array_agg((day_habits.day_id)) as days
-    from day_habits
+    array_agg((day_habits.day_id)) as days,
+    array_agg((day_habits.id)) as id
+    FROM day_habits
     JOIN months ON
     months.id = day_habits.month_id
-    where months.month = $1
-    group by day_habits.habits
+    WHERE months.month = $1
+    GROUP BY day_habits.habits
 `,[month])
 
     const resultsArray = result.rows
@@ -55,11 +56,21 @@ async function registerHabit(habits:string, month: number, day: number ){
     
 }
 
+async function deleteHabit(id:number){
+    const result = await database.query(`
+    DELETE FROM day_habits
+    WHERE id = $1
+    `,[id])
+
+    return result.rows[0]
+}
+
 module.exports = {
     getHabitsByMonth,
     registerHabit,
     addNewHabit,
-    getAllHabits
+    getAllHabits,
+    deleteHabit
 }
 
 

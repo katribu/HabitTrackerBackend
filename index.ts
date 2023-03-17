@@ -8,9 +8,8 @@ const app: Express = express();
 app.use(express.json())
 app.use(cors())
 
-const {getHabitsByMonth, registerHabit, addNewHabit, getAllHabits} = require('./database')
+const {getHabitsByMonth, registerHabit, addNewHabit, getAllHabits, deleteHabit} = require('./database')
 
-// const port = process.env.PORT;
 const port = 3333;
 
 app.get('/habits', async (req: Request, res: Response)=> {
@@ -52,8 +51,18 @@ app.post('/add', async (req:Request, res: Response)=> {
   try {
     await addNewHabit(habit)
     res.json({"message": `${habit} was successfully added to list.`})
-  }catch(error:any){
+  }catch(error:unknown){
   res.status(401).send({error:"This habit already exists"})
+  }
+})
+
+app.delete('/delete/:id', async (req:Request, res: Response) => {
+  const {id} = req.params
+  try{
+    await deleteHabit(id)
+    res.json({"message": `Habit with id ${id} was deleted`})
+  }catch(error:unknown){
+    res.status(401).send({error:"This habit already exists"})
   }
 })
 

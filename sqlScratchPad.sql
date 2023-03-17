@@ -91,7 +91,8 @@ JOIN months ON
     months.id = day_habits.month_id
 where months.month = 'January'
 group by day_habits.habits
--- get habits by month where they are in json format.
+
+--get habits by month where they are in json format.
 SELECT months.month,day_habits.habits, day_habits.month_id, 
 json_agg(json_build_object(
 'id',day_habits.id,
@@ -102,3 +103,8 @@ JOIN months ON
     months.id = day_habits.month_id
 where months.month = 'January'
 group by months.month,day_habits.habits, day_habits.month_id
+
+--delete a habit by id
+DELETE from day_habits
+WHERE id=1
+
