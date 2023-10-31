@@ -4,7 +4,7 @@ habit text not null
 );
 
 INSERT INTO habits (habit)
-VALUES ('yoga'),('alcohol'),('bm');
+VALUES ('yoga'),('read'),('code');
 
 select *
 from habits
